@@ -5,7 +5,7 @@ A Words Per Minute (WPM) counter built using Jetpack Compose, designed to measur
 You can download the APK for this Application here: [APK Link](https://drive.google.com/file/d/10Uys0hKuCkjuQkNI2IK65R0a09584PAI/view?usp=drive_link)
 
 ## Technologies Used:
-- **Jetpack Compose**: Modern UI toolkit for building native Android apps.
+- **Jetpack Compose**: UI toolkit for building native Android apps.
 - **Kotlin**: The programming language for Android development.
 - **Coroutines**: Efficient management of asynchronous tasks.
 - **Flows**: Handling streams of data asynchronously in Kotlin.
