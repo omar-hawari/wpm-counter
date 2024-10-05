@@ -24,6 +24,9 @@ class WPMCounter(
     // wpmCount is observed in the UI to display the current WPM
     val wpmCount = MutableStateFlow(0f)
 
+    // accuracy is observed in the UI to display the current accuracy
+    val accuracy = MutableStateFlow(0f)
+
     // isFinished indicates when the counting process has ended
     val isFinished = MutableStateFlow(false)
 
@@ -42,6 +45,14 @@ class WPMCounter(
         this.keyStrokesCount = keyStrokes.size
         if (!::timerJob.isInitialized) startTimer()
         startPauseTimer() // Starts pause timer that, if finished, pauses the wpm calculation
+    }
+
+    fun consumeAccuracy(accuracy: Float) {
+        if (accuracy < 0 || accuracy > 1f)
+            throw IllegalArgumentException("Accuracy cannot be negative nor greater than 1")
+        wpmScope.launch {
+            this@WPMCounter.accuracy.emit(accuracy)
+        }
     }
 
     private fun startTimer() {

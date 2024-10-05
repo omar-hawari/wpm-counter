@@ -6,11 +6,13 @@ import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
+import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Test
 
@@ -107,6 +109,44 @@ class WPMCounterTest {
 
         // The expected WPM for 50 keystrokes in 5 seconds is 120 WPM (approx, with 2 of margin of error).
         assertEquals(wpmAfterPaused, wpmAfterPausedAfterDelay, 2f)
+
+        wpmCounter.finish()
+    }
+
+    @Test
+    fun `test WPM Counter emits accuracy correctly`() = runTest(testDispatcher) {
+
+        wpmCounter.consumeAccuracy(0.5f)
+
+        // Delay to allow accuracy to be emitted
+        delay(10)
+
+        val accuracy = wpmCounter.accuracy.value
+
+        // The expected accuracy is 0.5
+        assertEquals(accuracy, 0.5f)
+
+        wpmCounter.finish()
+    }
+
+    @Test
+    fun `test WPM Counter throws exception for invalid accuracy negative values`() = runTest(testDispatcher) {
+
+        // Assert that an exception is thrown when trying to consume an invalid accuracy value.
+        assertThrows(IllegalArgumentException::class.java) {
+            wpmCounter.consumeAccuracy(-0.5f)
+        }
+
+        wpmCounter.finish()
+    }
+
+    @Test
+    fun `test WPM Counter throws exception for invalid accuracy greater than 1 values`() = runTest(testDispatcher) {
+
+        // Assert that an exception is thrown when trying to consume an invalid accuracy value.
+        assertThrows(IllegalArgumentException::class.java) {
+            wpmCounter.consumeAccuracy(2f)
+        }
 
         wpmCounter.finish()
     }

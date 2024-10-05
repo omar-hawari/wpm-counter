@@ -30,9 +30,6 @@ class WPMCounterViewModel @Inject constructor(
     // Where the WPM counter logic and code is executed
     val wpmCounter = WPMCounter()
 
-    // Holds the accuracy of the typing session as a percentage. Updates from db
-    val accuracy = MutableStateFlow(0f)
-
     // Holds the current session data, fetched from the repository
     private lateinit var sessionId: String
     val session = MutableStateFlow<Session?>(null)
@@ -72,7 +69,7 @@ class WPMCounterViewModel @Inject constructor(
         // Start collecting Accuracy stats from the db
         viewModelScope.launch(Dispatchers.IO) {
             repository.getAccuracyPerSession(sessionId).collect {
-                accuracy.emit(it)
+                wpmCounter.consumeAccuracy(accuracy = it)
             }
         }
 

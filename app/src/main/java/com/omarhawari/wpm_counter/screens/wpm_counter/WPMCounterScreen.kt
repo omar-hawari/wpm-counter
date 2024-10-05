@@ -38,7 +38,7 @@ fun WPMCounterScreen(
     }
 
     val currentUser by viewModel.currentUser.collectAsState()
-    val accuracy by viewModel.accuracy.collectAsState()
+    val accuracy by viewModel.wpmCounter.accuracy.collectAsState()
     val wpmCount by viewModel.wpmCounter.wpmCount.collectAsState()
 
     val cursor by viewModel.cursor.collectAsState()
