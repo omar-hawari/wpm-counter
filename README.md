@@ -2,7 +2,7 @@
 
 A Words Per Minute (WPM) counter built using Jetpack Compose, designed to measure typing speed and display real-time WPM and Input Accuracy calculations.
 
-You can download the APK for this Application here: [APK Link](https://drive.google.com/file/d/10Uys0hKuCkjuQkNI2IK65R0a09584PAI/view?usp=drive_link)
+You can download the APK for this Application here: [APK Link](https://drive.google.com/file/d/1t5d6XGiP0tt3ED0-lhNvEzqX_ORH0NCt/view?usp=drive_link)
 
 ## Technologies Used:
 - **Jetpack Compose**: UI toolkit for building native Android apps.
