@@ -12,19 +12,27 @@ import kotlinx.coroutines.launch
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
+/**
+ * WPMCounter is a class responsible for calculating Words Per Minute (WPM) based on keystrokes
+ * and managing the counting process asynchronously using coroutines.
+ *
+ * @param howOftenToCalculate The interval (in milliseconds) at which WPM should be recalculated. Default is 50ms.
+ * @param dispatcher The coroutine dispatcher that determines the thread on which the coroutine runs. Default is Dispatchers.IO. This is useful for testing purposes.
+ */
 class WPMCounter(
-    private val howOftenToCalculate: Long = 50, // How often to calculate the WPM in milliseconds
+    private val howOftenToCalculate: Long = 50,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
 
     init {
+        // Ensure the calculation interval is within a valid range (0 to 1000 milliseconds)
         if (howOftenToCalculate < 0 || howOftenToCalculate > 1000) throw IllegalArgumentException("howOftenToCalculate must be between 0 -> 1000 milliseconds")
     }
 
-    // wpmCount is observed in the UI to display the current WPM
+    // Observed in the UI to display the current WPM (Word Per Minute)
     val wpmCount = MutableStateFlow(0f)
 
-    // accuracy is observed in the UI to display the current accuracy
+    // Observed in the UI to display the current accuracy
     val accuracy = MutableStateFlow(0f)
 
     // isFinished indicates when the counting process has ended
@@ -41,12 +49,24 @@ class WPMCounter(
     private lateinit var timerJob: Job
     private lateinit var pauseTimerJob: Job
 
+    /**
+     * Consumes a list of KeyStroke objects, updating the keyStrokesCount and triggering
+     * the WPM calculation timer. Also starts a pause timer that pauses the calculation if the user stops typing after 2 seconds
+     *
+     * @param keyStrokes List of KeyStroke objects representing the user's input.
+     */
     fun consumeKeyStrokes(keyStrokes: List<KeyStroke>) {
         this.keyStrokesCount = keyStrokes.size
         if (!::timerJob.isInitialized) startTimer()
         startPauseTimer() // Starts pause timer that, if finished, pauses the wpm calculation
     }
 
+    /**
+     * Consumes the accuracy value (a Float between 0 and 1) and updates the accuracy state flow.
+     *
+     * @param accuracy A Float representing typing accuracy. Must be between 0 and 1
+     * @throws IllegalArgumentException if the accuracy is outside the allowed range (0 to 1).
+     */
     fun consumeAccuracy(accuracy: Float) {
         if (accuracy < 0 || accuracy > 1f)
             throw IllegalArgumentException("Accuracy cannot be negative nor greater than 1")
@@ -55,6 +75,10 @@ class WPMCounter(
         }
     }
 
+    /**
+     * Starts a coroutine that recalculates WPM at regular intervals, determined by the howOftenToCalculate value (default is 50 ms)
+     * Stops recalculating when isFinished is set to true, as the counting process has ended
+     */
     private fun startTimer() {
         timerJob = wpmScope.launch(dispatcher) {
             while (!isFinished.value) {
@@ -67,6 +91,9 @@ class WPMCounter(
         }
     }
 
+    /**
+     * Starts a timer that pauses the WPM calculation if the user stops typing for 2 seconds.
+     */
     private fun startPauseTimer() {
         isPaused = false
 
@@ -79,6 +106,13 @@ class WPMCounter(
         }
     }
 
+    /**
+     * Calculates the Words Per Minute (WPM) based on the number of keystrokes and time elapsed.
+     * Uses the formula: (keyStrokeCount / 5) / (duration in minutes)
+     * Where 5 is the average number of characters per word.
+     *
+     * @return The calculated WPM value as a Float.
+     */
     private suspend fun calculateWpm(): Float {
         val duration = timeElapsed.toDuration(
             DurationUnit.MILLISECONDS
