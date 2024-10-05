@@ -123,6 +123,11 @@ class WPMRepositoryDBImpl(val database: WPMDatabase) : WPMRepository {
             database.keyStrokeDao().getKeyStrokesCountPerSession(sessionId)
         }
 
+    override suspend fun getKeyStrokesForSession(sessionId: String): Flow<List<KeyStroke>> =
+        withContext(Dispatchers.IO) {
+            database.keyStrokeDao().getKeyStrokesPerSession(sessionId)
+        }
+
     override suspend fun getAccuracyPerSession(sessionId: String): Flow<Float> =
         withContext(Dispatchers.IO) {
             database.keyStrokeDao().getAccuracyRatePerSession(sessionId)

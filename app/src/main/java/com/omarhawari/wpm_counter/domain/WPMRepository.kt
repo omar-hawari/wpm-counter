@@ -127,6 +127,13 @@ interface WPMRepository {
      */
     suspend fun getKeyStrokeCountForSession(sessionId: String): Flow<Int>
 
+    /**
+     * Fetches the keystrokes for a given session
+     * @param sessionId The UUID of the session
+     * @return A Flow that emits the keystrokes for a session
+     */
+    suspend fun getKeyStrokesForSession(sessionId: String): Flow<List<KeyStroke>>
+
 
     /**
      * Fetches the accuracy rate for a given session

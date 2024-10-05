@@ -1,5 +1,7 @@
 package com.omarhawari.wpm_counter.domain
 
+import com.omarhawari.wpm_counter.database.daos.KeyStroke
+import com.omarhawari.wpm_counter.database.daos.ScreenOrientation
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -35,9 +37,27 @@ class WPMCounterTest {
     @Test
     fun `test WPM calculation after consuming keystrokes`() = runTest(testDispatcher) {
 
+        // Initialize a list to hold the keystrokes
+        val keyStrokes = arrayListOf<KeyStroke>()
+
+        val keyStroke = KeyStroke(
+            uuid = "some-uuid",
+            sessionId = "session-id",
+            keyPressTime = 1000L,
+            keyReleaseTime = 2000L,
+            keyCode = "some-key-code",
+            phoneOrientation = ScreenOrientation.PORTRAIT,
+            isCorrect = true
+        )
+
         // Simulate consuming 50 keystrokes.
         for (i in 1..50) {
-            wpmCounter.consumeKeyStrokes(i)
+            // Add a keystroke to the list
+            keyStrokes.add(keyStroke)
+
+            // Consume the new keystrokes list
+            wpmCounter.consumeKeyStrokes(keyStrokes)
+
             delay(100) // Simulate keystroke delay
         }
 
@@ -53,9 +73,26 @@ class WPMCounterTest {
     @Test
     fun `test WPM Counter is paused after 2 seconds of inactivity`() = runTest(testDispatcher) {
 
+        // Initialize a list to hold the keystrokes
+        val keyStrokes = arrayListOf<KeyStroke>()
+
+        val keyStroke = KeyStroke(
+            uuid = "some-uuid",
+            sessionId = "session-id",
+            keyPressTime = 1000L,
+            keyReleaseTime = 2000L,
+            keyCode = "some-key-code",
+            phoneOrientation = ScreenOrientation.PORTRAIT,
+            isCorrect = true
+        )
+
         // Simulate consuming 20 keystrokes over 2 seconds
         for (i in 1..20) {
-            wpmCounter.consumeKeyStrokes(i)
+            // Add a keystroke to the list
+            keyStrokes.add(keyStroke)
+
+            // Consume the new keystrokes list
+            wpmCounter.consumeKeyStrokes(keyStrokes)
             delay(100) // Simulate keystroke delay
         }
 

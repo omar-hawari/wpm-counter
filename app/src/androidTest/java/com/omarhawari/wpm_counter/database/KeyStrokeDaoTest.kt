@@ -47,7 +47,7 @@ class KeyStrokeDaoTest {
             keyStroke2.copy(keyReleaseTime = 2000L)
         )
 
-        val retrieveKeyStrokes = database.keyStrokeDao().getKeyStrokesPerSession("session-id")
+        val retrieveKeyStrokes = database.keyStrokeDao().getKeyStrokesPerSession("session-id").first()
 
         // Assert
         assertNotNull(retrieveKeyStrokes)

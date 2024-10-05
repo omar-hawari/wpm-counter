@@ -165,7 +165,7 @@ class WPMCounterViewModel @Inject constructor(
      */
     private fun collectKeyStrokesFromDB() {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.getKeyStrokeCountForSession(sessionId).collect { keyStrokeCount ->
+            repository.getKeyStrokesForSession(sessionId).collect { keyStrokeCount ->
                 if (session.value == null || session.value?.sessionStartTime == null) {
                     return@collect
                 }

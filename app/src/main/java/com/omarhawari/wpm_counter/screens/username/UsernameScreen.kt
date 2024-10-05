@@ -41,7 +41,12 @@ fun UsernameScreen(
 
     var username by remember { mutableStateOf("") }
 
-    Column(modifier = modifier.fillMaxSize().testTag(TEST_TAG_USER_SCREEN), verticalArrangement = Arrangement.Top) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .testTag(TEST_TAG_USER_SCREEN),
+        verticalArrangement = Arrangement.Top
+    ) {
         Text(
             text = "Enter your username or select your username from the list below",
             modifier = Modifier.padding(16.dp)
@@ -53,14 +58,20 @@ fun UsernameScreen(
                 username = it
             },
             placeholder = { Text(text = "Username") },
-            modifier = Modifier.fillMaxWidth().testTag(TEST_TAG_USER_TEXT_FIELD)
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag(TEST_TAG_USER_TEXT_FIELD)
+                .padding(horizontal = 16.dp, vertical = 8.dp)
         )
 
         Button(
             onClick = {
                 viewModel.startSession(username)
             },
-            modifier = Modifier.fillMaxWidth().testTag(TEST_TAG_USER_BUTTON),
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag(TEST_TAG_USER_BUTTON)
+                .padding(horizontal = 16.dp),
             enabled = username.isNotBlank()
         ) {
             Text(text = "Continue")

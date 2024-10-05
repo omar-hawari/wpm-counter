@@ -31,7 +31,7 @@ interface KeyStrokeDao {
 
     // Retrieves all keystrokes for a given session, ordered by the key release time in descending order
     @Query("SELECT * FROM $TABLE_NAME_KEYSTROKE WHERE session_id = :sessionId ORDER BY keyReleaseTime DESC")
-    fun getKeyStrokesPerSession(sessionId: String): List<KeyStroke>
+    fun getKeyStrokesPerSession(sessionId: String): Flow<List<KeyStroke>>
 
     // Retrieves the count of keystrokes for a given session as a Flow for real-time updates
     @Query("SELECT COUNT (*) FROM $TABLE_NAME_KEYSTROKE WHERE session_id = :sessionId")

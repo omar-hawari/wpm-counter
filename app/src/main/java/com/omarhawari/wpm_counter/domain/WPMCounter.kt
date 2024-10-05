@@ -1,5 +1,6 @@
 package com.omarhawari.wpm_counter.domain
 
+import com.omarhawari.wpm_counter.database.daos.KeyStroke
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -37,8 +38,8 @@ class WPMCounter(
     private lateinit var timerJob: Job
     private lateinit var pauseTimerJob: Job
 
-    fun consumeKeyStrokes(keyStrokesCount: Int) {
-        this.keyStrokesCount = keyStrokesCount
+    fun consumeKeyStrokes(keyStrokes: List<KeyStroke>) {
+        this.keyStrokesCount = keyStrokes.size
         if (!::timerJob.isInitialized) startTimer()
         startPauseTimer() // Starts pause timer that, if finished, pauses the wpm calculation
     }
