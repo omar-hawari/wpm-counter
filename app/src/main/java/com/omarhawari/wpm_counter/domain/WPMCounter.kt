@@ -68,7 +68,7 @@ class WPMCounter(
      * @throws IllegalArgumentException if the accuracy is outside the allowed range (0 to 1).
      */
     fun consumeAccuracy(accuracy: Float) {
-        if (accuracy < 0 || accuracy > 1f)
+        if (accuracy < 0 || accuracy > 100f)
             throw IllegalArgumentException("Accuracy cannot be negative nor greater than 1")
         wpmScope.launch {
             this@WPMCounter.accuracy.emit(accuracy)
