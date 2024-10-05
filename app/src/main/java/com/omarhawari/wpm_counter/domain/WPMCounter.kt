@@ -62,14 +62,14 @@ class WPMCounter(
     }
 
     /**
-     * Consumes the accuracy value (a Float between 0 and 1) and updates the accuracy state flow.
+     * Consumes the accuracy value (a Float between 0 and 100) and updates the accuracy state flow.
      *
-     * @param accuracy A Float representing typing accuracy. Must be between 0 and 1
-     * @throws IllegalArgumentException if the accuracy is outside the allowed range (0 to 1).
+     * @param accuracy A Float representing typing accuracy. Must be between 0 and 100
+     * @throws IllegalArgumentException if the accuracy is outside the allowed range (0 to 100).
      */
     fun consumeAccuracy(accuracy: Float) {
         if (accuracy < 0 || accuracy > 100f)
-            throw IllegalArgumentException("Accuracy cannot be negative nor greater than 1")
+            throw IllegalArgumentException("Accuracy cannot be negative nor greater than 100f")
         wpmScope.launch {
             this@WPMCounter.accuracy.emit(accuracy)
         }
