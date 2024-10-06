@@ -97,6 +97,15 @@ WHERE session_id = :sessionId AND isCorrect = 1
 ```markdown
 keyStroke[n].keyPresTime = keyStroke[n-1].keyReleaseTime
 ```
-
-
 ---------------------
+
+## Unit & UI Tests:
+All the code in the project is covered by either a unit test or a UI test. 
+These tests can be found under these directories:
+- `app\src\androidTest\java\com\omarhawari\wpm_counter`
+- `app\src\test\java\com\omarhawari\wpm_counter`
+
+All the tests can be run by typing this command in the terminal: (Assuming Gradle is installed properly into the machine)
+```markdown
+./gradlew test
+```
