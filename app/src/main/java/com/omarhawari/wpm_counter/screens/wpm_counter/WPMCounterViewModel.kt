@@ -40,6 +40,8 @@ class WPMCounterViewModel @Inject constructor(
     // Tracks the current cursor position in the text being typed.
     val cursor = MutableStateFlow(0)
 
+    // Indicates whether the ViewModel has subscribed to the repository, which is necessary to prevent the viewModel resubscribing to the repository's flows after configuration changes.
+    private var hasSubscribed = false
 
     /**
      * Fetches the session, the currentUser, and the accuracy from the repository
@@ -47,6 +49,9 @@ class WPMCounterViewModel @Inject constructor(
      * @param sessionId The id of the session being fetched
      */
     fun init(sessionId: String) {
+
+        if (hasSubscribed) // Prevent the viewModel from resubscribing to the repository's flows after configuration changes
+            return
 
         this.sessionId = sessionId
 
@@ -75,6 +80,8 @@ class WPMCounterViewModel @Inject constructor(
 
         // Start collecting keystrokes from the db
         collectKeyStrokesFromDB()
+
+        hasSubscribed = true
     }
 
     // Contains a list of the inputted characters and whether they are correct or not

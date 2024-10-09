@@ -56,9 +56,10 @@ class WPMCounter(
      * @param keyStrokes List of KeyStroke objects representing the user's input.
      */
     fun consumeKeyStrokes(keyStrokes: List<KeyStroke>) {
+        if (keyStrokes.size > keyStrokesCount) // Only launch the pause timer if the user has actually inputted something
+            startPauseTimer() // Starts pause timer that, if finished, pauses the wpm calculation
         this.keyStrokesCount = keyStrokes.size
         if (!::timerJob.isInitialized) startTimer()
-        startPauseTimer() // Starts pause timer that, if finished, pauses the wpm calculation
     }
 
     /**
