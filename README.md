@@ -2,8 +2,6 @@
 
 A Words Per Minute (WPM) counter built using Jetpack Compose, designed to measure typing speed and display real-time WPM and Input Accuracy calculations.
 
-You can download the APK for this Application here: [APK Link](https://drive.google.com/file/d/1t5d6XGiP0tt3ED0-lhNvEzqX_ORH0NCt/view?usp=drive_link)
-
 ## Technologies Used:
 - **Jetpack Compose**: UI toolkit for building native Android apps.
 - **Kotlin**: The programming language for Android development.
@@ -99,6 +97,15 @@ WHERE session_id = :sessionId AND isCorrect = 1
 ```markdown
 keyStroke[n].keyPresTime = keyStroke[n-1].keyReleaseTime
 ```
-
-
 ---------------------
+
+## Unit & UI Tests:
+All the code in the project is covered by either a unit test or a UI test. 
+These tests can be found under these directories:
+- `app\src\androidTest\java\com\omarhawari\wpm_counter`
+- `app\src\test\java\com\omarhawari\wpm_counter`
+
+All the tests can be run by typing this command in the terminal: (Assuming Gradle is installed properly into the machine)
+```markdown
+./gradlew test
+```
